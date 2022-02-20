@@ -7,6 +7,7 @@ import {
   Icon,
   IconButton,
   Progress,
+  useToast,
 } from "@chakra-ui/react";
 import * as dayjs from "dayjs";
 import { FunctionComponent, useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import LocalManager from "../../Common/LocalManager";
 import MemoPeriod from "../../Common/MemoPeriod";
 import { useLocalStorage } from "../../Common/useLocalStorage";
 import { Maximize, Minimize } from "react-feather";
+import TipManager from "../../Common/TipManager";
 
 const CURRENT_DAY_KEY = dayjs().format("YYYY-MM-DD");
 
@@ -68,6 +70,8 @@ const LocalReview: FunctionComponent<{
   }
 
   function memorize() {
+    showMemorizedTipIfNeeded();
+
     const currentMemo = remainArray[0];
     currentMemo.hasMemorized = true;
 
@@ -88,6 +92,8 @@ const LocalReview: FunctionComponent<{
   }
 
   function reset() {
+    showResetTipIfNeeded();
+
     const currentMemo = remainArray[0];
     currentMemo.reviewDate = dayjs().toString();
 
@@ -106,6 +112,31 @@ const LocalReview: FunctionComponent<{
       copy[CURRENT_DAY_KEY] = [];
       return copy;
     });
+  }
+
+  const toast = useToast();
+
+  function showMemorizedTipIfNeeded() {
+    if (!TipManager.hasShowedMemorizeTip()) {
+      toast({
+        title:
+          "标记为“记住了”之后，该内容将不会出现在复习列表中。你可以随时从右上角的🔍按钮中恢复回来。",
+        status: "info",
+        isClosable: true,
+      });
+      TipManager.showedMemorizeTip();
+    }
+  }
+
+  function showResetTipIfNeeded() {
+    if (!TipManager.hasShowedRestTip()) {
+      toast({
+        title: "重新记忆会重置该内容记忆周期开始的时间为今天。",
+        status: "info",
+        isClosable: true,
+      });
+      TipManager.showedRestTip();
+    }
   }
 
   return (

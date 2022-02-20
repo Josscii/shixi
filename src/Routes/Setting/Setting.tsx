@@ -19,6 +19,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../Auth/AuthProvider";
 import LocalManager from "../../Common/LocalManager";
 import MemoPeriod from "../../Common/MemoPeriod";
+import TipManager from "../../Common/TipManager";
 import { useLocalStorage } from "../../Common/useLocalStorage";
 
 const Setting: FunctionComponent = () => {
@@ -33,10 +34,12 @@ const Setting: FunctionComponent = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
-  const cancelRef = useRef();
+  //https://github.com/chakra-ui/chakra-ui/discussions/2936
+  const cancelRef = useRef(null);
   const toast = useToast();
   const onDelete = () => {
-    LocalManager.delete();
+    LocalManager.clear();
+    TipManager.clear();
     onClose();
     toast({
       title: "清除成功",

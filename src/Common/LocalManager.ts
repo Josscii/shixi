@@ -18,7 +18,7 @@ export default class LocalManager {
     );
   }
 
-  static delete() {
+  static clear() {
     window.localStorage.removeItem(LocalManager.LOCAL_MEMOS_KEY);
     window.localStorage.removeItem(LocalManager.MEMOED_CACHE_KEY);
   }
