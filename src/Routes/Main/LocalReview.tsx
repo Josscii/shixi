@@ -1,21 +1,35 @@
-import { Box, Button, Center, Flex, HStack, Tag } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Icon,
+  IconButton,
+  Progress,
+} from "@chakra-ui/react";
 import * as dayjs from "dayjs";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import LocalManager from "../../Common/LocalManager";
 import MemoPeriod from "../../Common/MemoPeriod";
 import { useLocalStorage } from "../../Common/useLocalStorage";
+import { Maximize, Minimize } from "react-feather";
 
 const MEMOED_CACHE_KEY = "memoed_cache";
 const CURRENT_DAY_KEY = dayjs().format("YYYY-MM-DD");
 
-const LocalReview: FunctionComponent<{ reload: number }> = ({ reload }) => {
-  let [memos, setMemos] = useState<Memo[]>([]);
-  let [memoedCache, setMemoedCache] = useLocalStorage<{
+const LocalReview: FunctionComponent<{
+  reload: number;
+  expand: boolean;
+  toggleExpand: () => void;
+}> = ({ reload, expand, toggleExpand }) => {
+  const [memos, setMemos] = useState<Memo[]>([]);
+  const [memoedCache, setMemoedCache] = useLocalStorage<{
     [key: string]: Memo[];
   }>(MEMOED_CACHE_KEY, {
     [CURRENT_DAY_KEY]: [],
   });
-  let periodContext = useContext(MemoPeriod.context);
+  const periodContext = useContext(MemoPeriod.context);
 
   let remainArray: Memo[] = [];
   for (const memo of memos) {
@@ -95,7 +109,7 @@ const LocalReview: FunctionComponent<{ reload: number }> = ({ reload }) => {
   return (
     <Flex
       w="100%"
-      flex="1 1 60%"
+      flex={expand ? "0 1 60%" : "1 1 60%"}
       mt="5"
       border="1px"
       borderColor="blue.500"
@@ -105,13 +119,26 @@ const LocalReview: FunctionComponent<{ reload: number }> = ({ reload }) => {
       gap="2"
       fontSize="4xl"
       pos="relative"
+      overflow="hidden"
     >
       {remainArray.length > 0 ? (
         <>
-          <Tag colorScheme="blue" variant="outline" pos="absolute" right="5">
+          <Badge colorScheme="blue" pos="absolute" right="0" top="0">
             {remainArray.length}
-          </Tag>
-          <Box flex="1">{remainArray[0].content}</Box>
+          </Badge>
+          <IconButton
+            aria-label="maximize"
+            icon={<Icon as={expand ? Minimize : Maximize}></Icon>}
+            pos="absolute"
+            right="5"
+            top="5"
+            bg="clear"
+            color="blue.500"
+            onClick={() => toggleExpand()}
+          ></IconButton>
+          <Box flex="1" overflow="auto">
+            {remainArray[0].content}
+          </Box>
           <Flex gap="4">
             <Button
               colorScheme="blue"
@@ -131,21 +158,13 @@ const LocalReview: FunctionComponent<{ reload: number }> = ({ reload }) => {
               下一个
             </Button>
           </Flex>
-          <Box
-            bg="blue.200"
-            h="5px"
-            borderRadius="lg"
-            overflow="hidden"
-            pos="relative"
-          >
-            <Box
-              bg="blue.500"
-              w={`${Math.round(
-                MemoPeriod.getMemoProgress(remainArray[0], periodContext) * 100
-              )}px`}
-              h="full"
-            ></Box>
-          </Box>
+          <Progress
+            value={Math.round(
+              MemoPeriod.getMemoProgress(remainArray[0], periodContext) * 100
+            )}
+            size="sm"
+            borderRadius="sm"
+          ></Progress>
         </>
       ) : memos.length > 0 ? (
         <Center h="full" color="gray.300" pos="relative">
