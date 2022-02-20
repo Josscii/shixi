@@ -27,9 +27,7 @@ const LocalReview: FunctionComponent<{
   const [memos, setMemos] = useState<Memo[]>([]);
   const [memoedCache, setMemoedCache] = useLocalStorage<{
     [key: string]: Memo[];
-  }>(LocalManager.MEMOED_CACHE_KEY, {
-    [CURRENT_DAY_KEY]: [],
-  });
+  }>(LocalManager.MEMOED_CACHE_KEY, {});
   const [period] = useLocalStorage(
     MemoPeriod.MEMO_PERIOD_KEY,
     MemoPeriod.defaultPeriod
@@ -38,6 +36,7 @@ const LocalReview: FunctionComponent<{
   let remainArray: Memo[] = [];
   for (const memo of memos) {
     if (
+      !memoedCache[CURRENT_DAY_KEY] ||
       memoedCache[CURRENT_DAY_KEY].filter((cache) => cache.id === memo.id)
         .length === 0
     ) {
@@ -64,7 +63,11 @@ const LocalReview: FunctionComponent<{
     const currentMemo = remainArray[0];
     setMemoedCache((last) => {
       const copy = { ...last };
-      copy[CURRENT_DAY_KEY] = copy[CURRENT_DAY_KEY].concat(currentMemo);
+      if (copy[CURRENT_DAY_KEY]) {
+        copy[CURRENT_DAY_KEY] = copy[CURRENT_DAY_KEY].concat(currentMemo);
+      } else {
+        copy[CURRENT_DAY_KEY] = [currentMemo];
+      }
       return copy;
     });
   }
