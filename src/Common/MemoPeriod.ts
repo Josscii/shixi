@@ -1,5 +1,4 @@
 import * as dayjs from "dayjs";
-import { createContext } from "react";
 
 export default class MemoPeriod {
   static MEMO_PERIOD_KEY = "memo_period";
@@ -17,5 +16,9 @@ export default class MemoPeriod {
     const day = dayjs().diff(dayjs(memo.reviewDate), "day") + 1;
     const index = periodDays.indexOf(`${day}`);
     return (index + 1) / periodDays.length;
+  }
+
+  static clear() {
+    window.localStorage.removeItem(MemoPeriod.MEMO_PERIOD_KEY);
   }
 }

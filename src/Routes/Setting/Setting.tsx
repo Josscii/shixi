@@ -40,6 +40,8 @@ const Setting: FunctionComponent = () => {
   const onDelete = () => {
     LocalManager.clear();
     TipManager.clear();
+    MemoPeriod.clear();
+    setPeriod(MemoPeriod.defaultPeriod);
     onClose();
     toast({
       title: "清除成功",

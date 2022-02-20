@@ -6,8 +6,8 @@ import Login from "./Routes/Login/Login";
 import RequireAuth from "./Auth/RequireAuth";
 import { AuthProvider } from "./Auth/AuthProvider";
 import { theme } from "./Theme/theme";
-import MemoPeriod from "./Common/MemoPeriod";
 import Setting from "./Routes/Setting/Setting";
+import LocalSearch from "./Routes/Search/LocalSearch";
 
 export default function App() {
   return (
@@ -29,6 +29,14 @@ export default function App() {
               element={
                 <RequireAuth>
                   <Setting />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <RequireAuth>
+                  <LocalSearch />
                 </RequireAuth>
               }
             />

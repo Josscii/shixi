@@ -27,7 +27,7 @@ const Header: FunctionComponent = () => {
         aria-label="search"
         icon={<Icon as={Search}></Icon>}
         bg="clear"
-        disabled={true}
+        onClick={() => navigate("/search")}
       ></IconButton>
     </Flex>
   );

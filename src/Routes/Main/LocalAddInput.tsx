@@ -1,7 +1,6 @@
 import { Box, Button, Textarea } from "@chakra-ui/react";
 import * as dayjs from "dayjs";
 import { FunctionComponent, useState } from "react";
-import { useAuth } from "../../Auth/AuthProvider";
 import { v4 as uuidv4 } from "uuid";
 import LocalManager from "../../Common/LocalManager";
 
@@ -47,6 +46,7 @@ const LocalAddInput: FunctionComponent<{
         value={text}
         onChange={(e) => setText(e.target.value)}
         disabled={submiting}
+        _placeholder={{ color: "gray.300" }}
       ></Textarea>
       <Button
         pos="absolute"
