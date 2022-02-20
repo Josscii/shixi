@@ -9,13 +9,12 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import * as dayjs from "dayjs";
-import { FunctionComponent, useContext, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import LocalManager from "../../Common/LocalManager";
 import MemoPeriod from "../../Common/MemoPeriod";
 import { useLocalStorage } from "../../Common/useLocalStorage";
 import { Maximize, Minimize } from "react-feather";
 
-const MEMOED_CACHE_KEY = "memoed_cache";
 const CURRENT_DAY_KEY = dayjs().format("YYYY-MM-DD");
 
 const LocalReview: FunctionComponent<{
@@ -26,10 +25,13 @@ const LocalReview: FunctionComponent<{
   const [memos, setMemos] = useState<Memo[]>([]);
   const [memoedCache, setMemoedCache] = useLocalStorage<{
     [key: string]: Memo[];
-  }>(MEMOED_CACHE_KEY, {
+  }>(LocalManager.MEMOED_CACHE_KEY, {
     [CURRENT_DAY_KEY]: [],
   });
-  const periodContext = useContext(MemoPeriod.context);
+  const [period] = useLocalStorage(
+    MemoPeriod.MEMO_PERIOD_KEY,
+    MemoPeriod.defaultPeriod
+  );
 
   let remainArray: Memo[] = [];
   for (const memo of memos) {
@@ -51,7 +53,7 @@ const LocalReview: FunctionComponent<{
       (memo) => !memo.hasMemorized
     );
     filteredMemos = filteredMemos.filter((memo) =>
-      MemoPeriod.isMemoInPeriod(memo, periodContext)
+      MemoPeriod.isMemoInPeriod(memo, period)
     );
     setMemos(filteredMemos);
   }
@@ -160,7 +162,7 @@ const LocalReview: FunctionComponent<{
           </Flex>
           <Progress
             value={Math.round(
-              MemoPeriod.getMemoProgress(remainArray[0], periodContext) * 100
+              MemoPeriod.getMemoProgress(remainArray[0], period) * 100
             )}
             size="sm"
             borderRadius="sm"

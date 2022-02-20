@@ -2,8 +2,8 @@ import * as dayjs from "dayjs";
 import { createContext } from "react";
 
 export default class MemoPeriod {
+  static MEMO_PERIOD_KEY = "memo_period";
   static defaultPeriod = "1 2 3 4 5 6 7 10 20 30";
-  static context = createContext<string>("");
 
   static isMemoInPeriod(memo: Memo, period: string): boolean {
     const periodDays = period.split(" ");

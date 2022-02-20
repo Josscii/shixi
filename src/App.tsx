@@ -7,27 +7,33 @@ import RequireAuth from "./Auth/RequireAuth";
 import { AuthProvider } from "./Auth/AuthProvider";
 import { theme } from "./Theme/theme";
 import MemoPeriod from "./Common/MemoPeriod";
+import Setting from "./Routes/Setting/Setting";
 
 export default function App() {
-  const [period, setPeriod] = useState(MemoPeriod.defaultPeriod);
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <MemoPeriod.context.Provider value={period}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/"
-                element={
-                  <RequireAuth>
-                    <Main />
-                  </RequireAuth>
-                }
-              />
-            </Routes>
-          </BrowserRouter>
-        </MemoPeriod.context.Provider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Main />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/setting"
+              element={
+                <RequireAuth>
+                  <Setting />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </AuthProvider>
     </ChakraProvider>
   );

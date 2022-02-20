@@ -10,6 +10,7 @@ export interface AuthContextType {
   authInfo: AuthInfo;
   localAuth: (callback: VoidFunction) => void;
   notionAuth: (callback: VoidFunction) => void;
+  logout: (callback: VoidFunction) => void;
 }
 
 const AuthContext = createContext<AuthContextType>(null!);
@@ -30,7 +31,12 @@ const AuthProvider: FunctionComponent = ({ children }) => {
     callback();
   };
 
-  let value = { authInfo, localAuth, notionAuth };
+  const logout = (callback: VoidFunction) => {
+    setAuthInfo({ authType: "none" });
+    callback();
+  };
+
+  let value = { authInfo, localAuth, notionAuth, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

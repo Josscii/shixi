@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FunctionComponent, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Auth/AuthProvider";
 
 const Login: FunctionComponent = () => {
@@ -55,7 +55,7 @@ const Login: FunctionComponent = () => {
                       setLoading(false);
                       navigate("/", { replace: true });
                     });
-                  }, 1000);
+                  }, 500);
                 }}
                 isLoading={loading}
               >
