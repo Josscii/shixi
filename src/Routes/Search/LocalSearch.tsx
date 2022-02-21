@@ -32,6 +32,13 @@ const LocalSearch: FunctionComponent = () => {
     updateMemos();
   }
 
+  function remove(memo: Memo) {
+    const localMemos = LocalManager.getLocalMemos();
+    delete localMemos[memo.id];
+    LocalManager.saveMemosToLocal(localMemos);
+    updateMemos();
+  }
+
   const filtered = memos.filter((memo) => memo.content.includes(searchText));
 
   return (
@@ -49,6 +56,7 @@ const LocalSearch: FunctionComponent = () => {
               memo={memo}
               memorize={memorize}
               reset={reset}
+              remove={remove}
             />
           ))
         ) : (
