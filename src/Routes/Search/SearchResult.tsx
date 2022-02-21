@@ -1,5 +1,5 @@
 import {
-  Box,
+  Text,
   Button,
   Flex,
   Icon,
@@ -45,9 +45,9 @@ const SearchResult: FunctionComponent<{
       fontSize="4xl"
       pos="relative"
     >
-      <Box flex="1" overflow="auto">
+      <Text flex="1" overflow="auto" whiteSpace="pre-line">
         {memo.content}
-      </Box>
+      </Text>
       <IconButton
         aria-label="delete"
         icon={<Icon as={X} />}

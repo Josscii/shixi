@@ -48,6 +48,7 @@ const LocalSearch: FunctionComponent = () => {
           placeholder="输入关键词进行搜索"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
+          size="lg"
         ></Input>
         {filtered.length > 0 ? (
           filtered.map((memo) => (

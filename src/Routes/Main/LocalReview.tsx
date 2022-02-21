@@ -1,6 +1,6 @@
 import {
   Badge,
-  Box,
+  Text,
   Button,
   Center,
   Flex,
@@ -172,9 +172,9 @@ const LocalReview: FunctionComponent<{
             color="blue.500"
             onClick={() => toggleExpand()}
           ></IconButton>
-          <Box flex="1" overflow="auto">
+          <Text flex="1" overflow="auto" whiteSpace="pre-line">
             {remainArray[0].content}
-          </Box>
+          </Text>
           <Flex gap="4">
             <Button
               colorScheme="blue"
