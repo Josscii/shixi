@@ -39,7 +39,9 @@ const LocalSearch: FunctionComponent = () => {
     updateMemos();
   }
 
-  const filtered = memos.filter((memo) => memo.content.includes(searchText));
+  const filtered = memos
+    .reverse()
+    .filter((memo) => memo.content.includes(searchText));
 
   return (
     <Container h="full" py="5">
